@@ -1,4 +1,5 @@
 import networkx as nx
+import matplotlib.pyplot as plt
 from utils import utils
 
 def build_graph(data):
@@ -47,3 +48,7 @@ if __name__ == "__main__":
     DG = build_graph(data)
     print(f"Part 1 solution: {part_1(DG)}")
     print(f"Part 2 solution: {part_2(DG)}")
+
+    # Plotting
+    nx.draw(DG)
+    plt.show()
