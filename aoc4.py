@@ -1,10 +1,10 @@
-import utils
+from utils import utils
 import re
 valid_keys = {"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"}
 npc_keys = {"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"}
     
-def part_1(data):
-    with open("aoc4_data.txt") as data_file:
+def part_1(d_file):
+    with open(d_file, "r") as data_file:
         count = 0
         pwd_dict = {}
         for line in data_file.read().strip().split("\n"):
@@ -19,8 +19,8 @@ def part_1(data):
                 pwd_dict = {}
     return count
 
-def part_2(data):
-    with open("aoc4_data.txt") as data_file:
+def part_2(d_file):
+    with open(d_file, "r") as data_file:
         count = 0
         pwd_dict = {}
         passports = data_file.read().strip().split("\n")
@@ -49,8 +49,8 @@ def part_2(data):
         return count
 
 if __name__ == "__main__":
-    data = utils.get_strs_from_file("aoc4_data.txt")
-    output_1 = part_1(data)
+    day = 4
+    output_1 = part_1(f"data/aoc{day}_data.txt")
     print(output_1)
-    output_2 = part_2(data)
+    output_2 = part_2(f"data/aoc{day}_data.txt")
     print(output_2)

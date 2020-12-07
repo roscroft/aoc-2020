@@ -1,5 +1,5 @@
 import networkx as nx
-import utils
+from utils import utils
 
 def build_graph(data):
     DG = nx.DiGraph()
@@ -19,6 +19,7 @@ def build_graph(data):
                 edge_weight = int(end_node[0])
                 end_node = end_node[2:]
                 DG.add_node(end_node)
+                # Reverse digraph to make problem solving easy
                 DG.add_edge(end_node, start_node, weight=edge_weight)
     return DG
 
@@ -42,7 +43,7 @@ def part_2(DG):
     return DG.nodes["shiny gold bag"]["weight"]
 
 if __name__ == "__main__":
-    data = utils.get_strs_from_file("aoc7_data.txt")
+    data = utils.get_strs_from_file("data/aoc7_data.txt")
     DG = build_graph(data)
     print(f"Part 1 solution: {part_1(DG)}")
     print(f"Part 2 solution: {part_2(DG)}")

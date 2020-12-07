@@ -1,4 +1,4 @@
-import utils
+from utils import utils
 
 def two_sum_to_2020(data):
     for i in range(len(data)):
@@ -16,7 +16,8 @@ def three_sum_to_2020(data):
     return 0
     
 if __name__ == "__main__":
-    data = utils.get_ints_from_file("aoc1_data.txt")
+    day = 1
+    data = utils.get_ints_from_file(f"data/aoc{day}_data.txt")
     output_1 = two_sum_to_2020(data)
     print(output_1)
     output_2 = three_sum_to_2020(data)

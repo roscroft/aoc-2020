@@ -1,5 +1,5 @@
 import re
-import utils
+from utils import utils
 
 def parse(pass_str):
     m = re.search(r'(\d+)-(\d+) ([a-z]): ([a-z]+)', pass_str)
@@ -26,7 +26,8 @@ def part_2(data):
     return count
 
 if __name__ == "__main__":
-    data = utils.get_strs_from_file("aoc2_data.txt")
+    day = 2
+    data = utils.get_strs_from_file(f"data/aoc{day}_data.txt")
     output_1 = part_1(data)
     print(output_1)
     output_2 = part_2(data)

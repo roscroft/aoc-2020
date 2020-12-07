@@ -1,4 +1,4 @@
-import utils
+from utils import utils
 
 def part_1(x_inc, y_inc, data):
     count = 0
@@ -19,7 +19,8 @@ def part_2(data):
     return trees
 
 if __name__ == "__main__":
-    data = utils.get_strs_from_file("aoc3_data.txt")
+    day = 3
+    data = utils.get_strs_from_file(f"data/aoc{day}_data.txt")
     x_inc = 3
     y_inc = 1
     output_1 = part_1(x_inc, y_inc, data)

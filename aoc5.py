@@ -1,4 +1,4 @@
-import utils
+from utils import utils
 
 def convert_dec(digits):
     char_replace = {"F":"0", "L":"0", "B":"1", "R":"1"}
@@ -16,6 +16,7 @@ def part_2(data):
     return int(max_seat*(max_seat+1)/2 - min_seat*(min_seat-1)/2 - sum(seat_ids))
 
 if __name__ == "__main__":
-    data = utils.get_strs_from_file("aoc5_data.txt")
+    day = 5
+    data = utils.get_strs_from_file(f"data/aoc{day}_data.txt")
     print(f"Part 1 solution: {part_1(data)}")
     print(f"Part 2 solution: {part_2(data)}")
