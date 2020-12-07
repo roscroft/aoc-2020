@@ -1,0 +1,15 @@
+
+def part_2(data):
+    count = 0
+    for pass_str in data:
+        lb, ub, letter, password = parse(pass_str)
+        # Build the two search strings - letter in lower xor upper position
+        # Numbers are m and n - need strings in the following format:
+        # (m-1 any) (mth char - letter) (n-m-1 any) (nth char - letter) (any any)
+        lower = "."*(lb-1) + letter + "."*(ub-lb-1) + f"[^{letter}]" + ".*"
+        upper = "."*(lb-1) + f"[^{letter}]" + "."*(ub-lb-1) + letter + ".*"
+        match_lower = re.match(lower, password)
+        match_upper = re.match(upper, password)
+        if match_lower != match_upper:
+            count += 1
+    return count
