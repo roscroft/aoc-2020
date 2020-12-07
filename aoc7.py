@@ -1,54 +1,48 @@
 import networkx as nx
-import matplotlib.pyplot as plt
 from utils import utils
+
+# regex = r"(\w+ \w+) bags contain (?:no other bags\.)|(?:(\d+) (\w+ \w+) bag(?:\.|s\.|s, ))+
 
 def build_graph(data):
     DG = nx.DiGraph()
     for line in data:
-        # Takes in a line of data of the form: r"(\w+ \w+) bags contain (?:(\d+) (\w+ \w+) bag(?:.|s.|s, ))+"
+        line = line.replace("bags", "bag")
+        line = line.replace(".", "")
+        # Start and end node(s) separated by " contain "
         start_node, ends = line.split(" contain ")
-        start_node = start_node.replace("bags", "bag")
-        DG.add_node(start_node)
-        # ends is of the form (no other bags.)|(<number> <color> <color> bag(s?)(.|, ))+
-        # split ends on ,
+        # split end nodes on ", "
         end_nodes = ends.split(", ")
         for end_node in end_nodes:
-            if end_node != "no other bags.":
-                end_node = end_node.replace(".", "")
-                end_node = end_node.replace("bags", "bag")
-                # No weight is more than 9
-                edge_weight = int(end_node[0])
-                end_node = end_node[2:]
-                DG.add_node(end_node)
-                # Reverse digraph to make problem solving easy
+            if end_node != "no other bag":
+                end_node_data = end_node.split(" ")
+                edge_weight = int(end_node_data[0])
+                end_node = " ".join(end_node_data[1:])
+                # Digraph edges go from end to start to make problem solving easy. Adding 
+                # an edge between two nodes adds the two nodes to the node set (no duplicates).
                 DG.add_edge(end_node, start_node, weight=edge_weight)
     return DG
 
-def part_1(DG):
-    dfs = nx.dfs_postorder_nodes(DG, source="shiny gold bag")
-    # for some reason the DFS includes the source node
+def part_1(DG, bag):
+    dfs = nx.dfs_postorder_nodes(DG, source=bag)
+    # DFS includes source node
     return sum(1 for _ in dfs) - 1
 
-def part_2(DG):
+def part_2(DG, bag):
     topo_sort = list(nx.topological_sort(DG))
     for node in topo_sort:
         node_weight = 0
         for predecessor in DG.predecessors(node):
-            # Add edge weights
-            node_weight += DG[predecessor][node]["weight"]
-            # Add predecessor node weights * edge weights. Trust me
+            pred_edge_weight = DG[predecessor][node]["weight"]
             pred_node_weight = DG.nodes[predecessor].get("weight")
-            if pred_node_weight:
-                node_weight += pred_node_weight*DG[predecessor][node]["weight"]
+            # Add the sum of edge weights plus the edge weights multiplied by the node weights
+            node_weight += pred_edge_weight
+            node_weight += pred_node_weight*pred_edge_weight if pred_node_weight else 0
         DG.nodes[node]["weight"] = node_weight
-    return DG.nodes["shiny gold bag"]["weight"]
+    return DG.nodes[bag]["weight"]
 
 if __name__ == "__main__":
     data = utils.get_strs_from_file("data/aoc7_data.txt")
     DG = build_graph(data)
-    print(f"Part 1 solution: {part_1(DG)}")
-    print(f"Part 2 solution: {part_2(DG)}")
-
-    # Plotting
-    nx.draw(DG)
-    plt.show()
+    bag = "shiny gold bag"
+    print(f"Part 1 solution: {part_1(DG, bag)}")
+    print(f"Part 2 solution: {part_2(DG, bag)}")
