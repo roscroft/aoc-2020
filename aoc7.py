@@ -26,14 +26,10 @@ def part_1(DG, bag):
 def part_2(DG, bag):
     topo_sort = list(nx.topological_sort(DG))
     for node in topo_sort:
-        node_weight = 0
-        for predecessor in DG.predecessors(node):
-            pred_edge_weight = DG[predecessor][node]["weight"]
-            pred_node_weight = DG.nodes[predecessor].get("weight")
-            # Add the sum of edge weights plus the edge weights multiplied by the node weights
-            node_weight += pred_edge_weight
-            node_weight += pred_node_weight*pred_edge_weight if pred_node_weight else 0
-        DG.nodes[node]["weight"] = node_weight
+        DG.nodes[node]["weight"] = 0
+        for pred in DG.predecessors(node):
+            # Add the edge weight time node weight (if exists) plus one, to account for the predecessor bag itself
+            DG.nodes[node]["weight"] += DG[pred][node]["weight"] * (DG.nodes[pred].get("weight") + 1)
     return DG.nodes[bag]["weight"]
 
 if __name__ == "__main__":
