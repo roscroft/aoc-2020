@@ -6,8 +6,7 @@ def build_graph(data):
     DG = nx.DiGraph()
     for line in data:
         start_node = re.match(r"(\w+ \w+) bags", line).group(1)
-        end_nodes = re.findall(r"(\d+) (\w+ \w+) bag", line)
-        for end_node in end_nodes:
+        for end_node in re.findall(r"(\d+) (\w+ \w+) bag", line):
             DG.add_edge(end_node[1], start_node, weight=int(end_node[0]))
     return DG
 
@@ -20,9 +19,6 @@ def part_2(DG, bag):
     return DG.nodes[bag]["weight"]
 
 if __name__ == "__main__":
-    day = 7
-    data = utils.get_strs_from_file(f"data/aoc{day}_data.txt")
-    DG = build_graph(data)
-    bag = "shiny gold"
-    print(f"Part 1 solution: {part_1(DG, bag)}")
-    print(f"Part 2 solution: {part_2(DG, bag)}")
+    DG = build_graph(utils.get_strs_from_file(f"data/aoc7_data.txt"))
+    print(f"Part 1 solution: {part_1(DG, 'shiny gold')}")
+    print(f"Part 2 solution: {part_2(DG, 'shiny gold')}")
