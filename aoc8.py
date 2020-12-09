@@ -4,9 +4,8 @@ def get_op_data(data):
     """Parses list of operations."""
     op_data = []
     for line in data:
-        m = re.match(r"(nop|acc|jmp) (?:\+(\d+)|(-\d+))", line)
-        ins = m.group(1)
-        val = m.group(2) if m.group(3) is None else m.group(3)
+        # Regex returns instruction and value into a tuple
+        ins, val = re.findall(r"(nop|acc|jmp) \+?(-?\d+)", line)[0]
         op_data.append((ins, int(val)))
     return op_data
 

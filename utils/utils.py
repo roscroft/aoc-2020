@@ -1,6 +1,11 @@
-def get_ints_from_file(filename):
+def get_floats_from_file(filename):
     with open(filename) as data_file:
         read_data = [float(x) for x in data_file.read().strip().split("\n")]
+        return read_data
+
+def get_ints_from_file(filename):
+    with open(filename) as data_file:
+        read_data = [int(x) for x in data_file.read().strip().split("\n")]
         return read_data
 
 def get_strs_from_file(filename):
